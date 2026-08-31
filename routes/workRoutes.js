@@ -1,14 +1,14 @@
 const express = require("express");
 
+const upload = require("../middleware/upload");
+
+const { createWork, getWork } = require("../controllers/workControllers");
+
+const { protect } = require("../middleware/auth");
+
 const router = express.Router();
 
-router.get("/", (req, res) => {
-  res.send("work route");
-});
-router.get("/:id", (req, res) => {
-  const id = req.params.id;
-
-  res.send(`work route ${id}`);
-});
+router.post("/create", protect, upload.array("images", 10), createWork);
+router.get("/", getWork);
 
 module.exports = router;
