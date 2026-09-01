@@ -9,8 +9,9 @@ exports.createWork = async (req, res) => {
       gitHubServerLink,
       siteLink,
       description,
-      tags,
     } = req.body;
+
+    const tags = JSON.parse(req.body.tags);
 
     const images = req.files.map((file) => file.filename);
 
@@ -38,7 +39,18 @@ exports.getWork = async (req, res) => {
 
     res.status(200).send(work);
   } catch (error) {
-    console.error(error);
+    res.status(500).send("Internal Server Error");
+  }
+};
+
+exports.getWorkItem = async (req, res) => {
+  const id = req.params.id;
+
+  try {
+    const workItem = await Work.findById(id);
+
+    res.status(200).send(workItem);
+  } catch (error) {
     res.status(500).send("Internal Server Error");
   }
 };

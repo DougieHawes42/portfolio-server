@@ -15,6 +15,7 @@ mongoose
 
 const userRoute = require("./routes/userRoutes");
 const workRoute = require("./routes/workRoutes");
+const blogRoute = require("./routes/blogRoutes");
 
 app.use("/uploads", express.static("uploads"));
 
@@ -23,5 +24,6 @@ app.use(cors());
 
 app.use("/api/user", userRoute);
 app.use("/api/work", workRoute);
+app.use("/api/blog", blogRoute);
 
 app.listen(PORT, () => console.log(`Express app running on port ${PORT}`));
