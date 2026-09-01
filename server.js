@@ -17,8 +17,6 @@ const userRoute = require("./routes/userRoutes");
 const workRoute = require("./routes/workRoutes");
 const blogRoute = require("./routes/blogRoutes");
 
-app.use("/uploads", express.static("uploads"));
-
 app.use(express.json());
 app.use(cors());
 

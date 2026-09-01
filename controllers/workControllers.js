@@ -1,4 +1,5 @@
 const Work = require("../models/workModel");
+const cloudinary = require("../config/cloudinary");
 
 exports.createWork = async (req, res) => {
   try {
@@ -13,7 +14,26 @@ exports.createWork = async (req, res) => {
 
     const tags = JSON.parse(req.body.tags);
 
-    const images = req.files.map((file) => file.filename);
+    const imageUploads = req.files.map((file) => {
+      return new Promise((resolve, reject) => {
+        const uploadStream = cloudinary.uploader.upload_stream(
+          {
+            folder: "portfolio-work",
+          },
+          (error, result) => {
+            if (error) {
+              return reject(error);
+            }
+
+            resolve(result.secure_url);
+          },
+        );
+
+        uploadStream.end(file.buffer);
+      });
+    });
+
+    const images = await Promise.all(imageUploads);
 
     const newWork = await Work.create({
       title,
@@ -26,10 +46,13 @@ exports.createWork = async (req, res) => {
       images,
     });
 
-    res.status(201).send(newWork);
+    res.status(201).json(newWork);
   } catch (error) {
-    console.error(error);
-    res.status(500).send("Internal Server Error");
+    console.error("CREATE WORK ERROR:", error);
+
+    res.status(500).json({
+      message: error.message,
+    });
   }
 };
 
