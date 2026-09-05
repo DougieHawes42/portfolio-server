@@ -1,8 +1,33 @@
+const cloudinary = require("../config/cloudinary");
+
 const Blog = require("../models/blogModel");
 
 exports.createBlog = async (req, res) => {
   try {
-    const { title, text, tags, images } = req.body;
+    const { title, text } = req.body;
+
+    const tags = JSON.parse(req.body.tags);
+
+    const imageUploads = req.files.map((file) => {
+      return new Promise((resolve, reject) => {
+        const uploadStream = cloudinary.uploader.upload_stream(
+          {
+            folder: "portfolio-blog",
+          },
+          (error, result) => {
+            if (error) {
+              return reject(error);
+            }
+
+            resolve(result.secure_url);
+          },
+        );
+
+        uploadStream.end(file.buffer);
+      });
+    });
+
+    const images = await Promise.all(imageUploads);
 
     const newBlog = await Blog.create({
       title,

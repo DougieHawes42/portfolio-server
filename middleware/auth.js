@@ -16,6 +16,6 @@ exports.protect = (req, res, next) => {
 
     next();
   } catch (error) {
-    return req.status(401).json({ message: "invalid or expired token" });
+    return res.status(401).json({ message: "invalid or expired token" });
   }
 };
