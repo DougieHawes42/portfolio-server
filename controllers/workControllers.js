@@ -13,7 +13,13 @@ exports.createWork = async (req, res) => {
       description,
     } = req.body;
 
-    const tags = JSON.parse(req.body.tags);
+    console.log("BODY:", req.body);
+    console.log("FILES:", req.files);
+
+    const tags = req.body.tags
+      .split(" ")
+      .map((tag) => tag.trim())
+      .filter(Boolean);
 
     const imageUploads = req.files.map((file) => {
       return new Promise((resolve, reject) => {

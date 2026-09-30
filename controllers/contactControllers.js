@@ -7,9 +7,7 @@ exports.sendEmail = async (req, res) => {
     return res.status(400).send("All fields are required");
   }
 
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-  if (!emailRegex.test(email)) {
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     return res.status(400).send("Invalid email address");
   }
 

@@ -4,6 +4,8 @@ const Blog = require("../models/blogModel");
 
 exports.createBlog = async (req, res) => {
   try {
+    console.log("Request body:", req.body);
+
     const { title, text } = req.body;
 
     const tags = JSON.parse(req.body.tags);

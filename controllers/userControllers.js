@@ -2,10 +2,6 @@ const User = require("../models/userModel");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
-exports.userRoute = async (req, res) => {
-  res.send("user route");
-};
-
 exports.signUp = async (req, res) => {
   const { email, password, confirmPassword } = req.body;
 
